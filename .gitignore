@@ -5,10 +5,10 @@
 *.pydevproject
 .project
 .metadata
-bin/
+#bin/
 tmp/
 *.tmp
-*.bak
+#*.bak
 *.swp
 *~.nib
 local.properties
@@ -48,7 +48,7 @@ local.properties
 x64/
 build/
 #[Bb]in/
-[Oo]bj/
+#[Oo]bj/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -57,8 +57,8 @@ build/
 *_i.c
 *_p.c
 *.ilk
-*.meta
-*.obj
+#*.meta
+#*.obj
 *.pch
 *.pdb
 *.pgc
@@ -140,7 +140,7 @@ csx
 AppPackages/
 
 # Others
-sql/
+#sql/
 *.Cache
 ClientBin/
 [Ss]tyle[Cc]op.*
