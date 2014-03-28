@@ -11,6 +11,7 @@ using System.Data.Sql;
 using System.Data.SqlClient;
 using System.IO;
 using System.Configuration;
+using System.Diagnostics;
 
 
 public partial class _Default : Page
@@ -18,21 +19,32 @@ public partial class _Default : Page
 
     public void Page_Load(object sender, EventArgs e)
     {
-        //List<string> Years = new List<string>();
-        //Years.Add("2013-2014");
-        //Years.Add("2014-2015");
-        //ListBox1.DataSource = Years;
+        List<string> Years = new List<string>();
 
-        //List<string> Sems = new List<string>();
-        //Sems.Add("1-й семестр");
-        //Sems.Add("2-й семестр");
-        //ListBox2.DataSource = Sems;
+        for (int i = 2010; i <= 2099; i++)
+        {
+            Years.Add(i.ToString()+"-"+(i+1).ToString());
+        }
+
+        ListBox1.DataSource = Years;        
+        ListBox1.DataBind();
+
+        List<string> Sems = new List<string>();
+
+        Sems.Add("Осенний семестр");
+        Sems.Add("Весенний семестр");
+
+        ListBox2.DataSource = Sems;
+        ListBox2.DataBind();
+
     }
     public class GEx : System.Exception
     {
         public GEx(string message, Exception inner): base(message, inner)
         { }
     }
+    private Process[] processes;
+    private string procName = "Excel";
     public void Button1_Click(object sender, EventArgs e)
     {
         try
@@ -71,9 +83,17 @@ public partial class _Default : Page
 
         try
         {
-            //сделать для разных типов файлов
+            //строка подключения для разных типов файлов
             string strExcelConn = "";
-            strExcelConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + path + ";Extended Properties='Excel 8.0;HDR=YES;'";
+
+            if(Extens.filex == ".xls")
+            {
+                strExcelConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + path + ";Extended Properties='Excel 8.0;HDR=YES;'"; 
+            }
+            else
+            {
+                strExcelConn = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties='Excel 12.0 Xml;HDR=YES;'";
+            }
             
             ExApp.app = new Ex.Application();
             ExBook.book = ExApp.app.Workbooks.Open(path);
@@ -142,7 +162,7 @@ public partial class _Default : Page
         }
         catch(NullReferenceException e)
         {
-            GEx ex = new GEx(e.Message + "Возможно, что один из листов книги пуст", e);
+            GEx ex = new GEx(e.Message + " Возможно, что один из листов книги пуст", e);
             throw ex;            
         }
         catch (ApplicationException e)
@@ -159,27 +179,21 @@ public partial class _Default : Page
         {            
             if (ExApp.app != null)
             {
-                System.Diagnostics.Process[] process = System.Diagnostics.Process.GetProcessesByName("Excel");
-                foreach (System.Diagnostics.Process p in process)
+                try
                 {
-                    if (!string.IsNullOrEmpty(p.ProcessName))
+                    processes = Process.GetProcessesByName(procName);
+                    foreach(Process proc in processes)
                     {
-                        try
-                        {
-                            p.Kill();
-                        }
-                        catch { }
+                        proc.Kill();                        
                     }
                 }
-                //ExApp.app.DisplayAlerts = false;
-                //ExApp.app.Quit();
-                //GC.Collect();
-                //ExApp.app.DisplayAlerts = false;
-                //System.Runtime.InteropServices.Marshal.ReleaseComObject(ExApp.app);
-                //ExApp.app = null;
+                catch(NullReferenceException e)
+                {
+                    GEx ex = new GEx(e.Message, e);
+                    throw ex;
+                }                
             }
-        }
-               
+        }               
     }
 
     private string GetExcelColumnName(int columnNumber)
@@ -203,11 +217,6 @@ public partial class _Default : Page
         try
         {
             //работа с файлом
-            //string savePath = @"C:\Users\Denis\Documents\Visual Studio 2013\WebSites\WebSite3\Files\";
-            //string fileName = FileUpload1.FileName;
-            //savePath += fileName;
-            //FileUpload1.SaveAs(savePath);
-            //TextBox1.Text = savePath;
             string savePath = "";
 
             if(FileUpload1.HasFile)
@@ -341,11 +350,12 @@ public partial class _Default : Page
 
     protected void Button2_Click(object sender, EventArgs e)
     {
-        if (ExApp.app != null)
-        {
-            ExBook.book.Close(null, null, null);
-            ExApp.app.Quit();
-            ExApp.app = null;
-        }
+        //Сделать удаление таблиц!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //if (ExApp.app != null)
+        //{
+        //    ExBook.book.Close(null, null, null);
+        //    ExApp.app.Quit();
+        //    ExApp.app = null;
+        //}
     }
 }

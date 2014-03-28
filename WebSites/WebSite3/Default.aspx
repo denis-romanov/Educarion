@@ -24,8 +24,6 @@
             </p>
             <p>
                 <asp:ListBox ID="ListBox1" runat="server" Rows="1" Width="154px">
-                    <asp:ListItem>2013-2014</asp:ListItem>
-                    <asp:ListItem>2014-2015</asp:ListItem>
                 </asp:ListBox>
             </p>
             <p>
