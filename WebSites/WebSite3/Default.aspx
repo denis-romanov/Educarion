@@ -28,8 +28,6 @@
             </p>
             <p>
                 <asp:ListBox ID="ListBox2" runat="server" Rows="1" Width="152px">
-                    <asp:ListItem>1-й семестр</asp:ListItem>
-                    <asp:ListItem>2-й семестр</asp:ListItem>
                 </asp:ListBox>
             </p>
             <p>

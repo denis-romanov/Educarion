@@ -24,17 +24,23 @@ public partial class _Default : Page
         for (int i = 2010; i <= 2099; i++)
         {
             Years.Add(i.ToString()+"-"+(i+1).ToString());
+            
+        }
+        for (int j = 0; j < Years.Count; j++)
+        {
+            ListBox1.Items.Add(Years[j]);
         }
 
-        ListBox1.DataSource = Years;        
-        ListBox1.DataBind();
+            ListBox1.DataBind();
 
         List<string> Sems = new List<string>();
 
         Sems.Add("Осенний семестр");
         Sems.Add("Весенний семестр");
 
-        ListBox2.DataSource = Sems;
+        
+        ListBox2.Items.Add(Sems[0]);
+        ListBox2.Items.Add(Sems[1]);
         ListBox2.DataBind();
 
     }
@@ -77,31 +83,31 @@ public partial class _Default : Page
     {
         public static string filex = "";
     }
-    
+
     protected void ExcelWorks(string path)
-    {       
+    {
 
         try
         {
             //строка подключения для разных типов файлов
             string strExcelConn = "";
 
-            if(Extens.filex == ".xls")
+            if (Extens.filex == ".xls")
             {
-                strExcelConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + path + ";Extended Properties='Excel 8.0;HDR=YES;'"; 
+                strExcelConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + path + ";Extended Properties='Excel 8.0;HDR=YES;'";
             }
             else
             {
                 strExcelConn = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties='Excel 12.0 Xml;HDR=YES;'";
             }
-            
+
             ExApp.app = new Ex.Application();
             ExBook.book = ExApp.app.Workbooks.Open(path);
             Ex.Sheets excelsheets = ExBook.book.Worksheets;
             Ex.Worksheet excelwsheet;
             Ex.Range rowstodelete;
 
-            for (int i = 1; i < ExBook.book.Worksheets.Count; i++)
+            for (int i = 1; i <= ExBook.book.Worksheets.Count; i++)
             {
                 //выбор диапазона ячеек
                 excelwsheet = (Ex.Worksheet)excelsheets.get_Item(i);
@@ -110,11 +116,11 @@ public partial class _Default : Page
                 //действия со строками        
                 rowstodelete.Delete(Ex.XlDirection.xlDown);
             }
-                        
+
             Ex.Range frow;
 
             //работа с листами
-            for (int i = 1; i <= ExBook.book.Worksheets.Count; i++)
+            for (int i = 1; i <= 6; i++)
             {
                 excelwsheet = (Ex.Worksheet)excelsheets.get_Item(i);
                 frow = (Ex.Range)excelwsheet.Rows["1:1"];
@@ -130,10 +136,10 @@ public partial class _Default : Page
                 string command4 = "";
 
                 for (int j = 1; j <= excelwsheet.UsedRange.Columns.Count; j++)
-                {                    
+                {
                     cn = GetExcelColumnName(j);
-                    cells = excelwsheet.get_Range(cn + "1").Value;                    
-                    
+                    cells = excelwsheet.get_Range(cn + "1").Value;
+
                     if (cells.ToString().Trim() == "ауд." || cells.ToString().Trim() == "Дни" || cells.ToString().Trim() == "Часы" || cells.ToString().Trim() == "неделя")
                     {
                         cells += j.ToString();
@@ -144,58 +150,59 @@ public partial class _Default : Page
 
                     names[j - 1] = cells.ToString().Trim();
 
-                }
-
-                ExBook.book.Save();
-                ExApp.app.DisplayAlerts = false;
-                ExBook.book.Close();
+                }            
 
                 string command1 = "create table " + "[" + shname + " " + ListBox2.SelectedValue.ToString() + " " + ListBox1.SelectedValue.ToString() + "] (";
-                string command2 = command1 + command4.Trim(',', ' ') + ");";                
+                string command2 = command1 + command4.Trim(',', ' ') + ");";
 
                 SqlCreateTab(shname, command2);
                 DataTable dtExcel = RetrieveData(strExcelConn, shname);
                 SqlBulkCopyImport(dtExcel, shname, names);
 
-            }          
-            
+            }
+
+
         }
-        catch(NullReferenceException e)
+        catch (NullReferenceException e)
         {
             GEx ex = new GEx(e.Message + " Возможно, что один из листов книги пуст", e);
-            throw ex;            
+            throw ex;
         }
         catch (ApplicationException e)
         {
             GEx ex = new GEx(e.Message, e);
-            throw ex;           
+            throw ex;
         }
-        catch(SystemException e)
+        catch (SystemException e)
         {
             GEx ex = new GEx(e.Message, e);
             throw ex;
         }
+
         finally
-        {            
+        {
             if (ExApp.app != null)
             {
                 try
                 {
+                    //ExBook.book.Save();
+                    //ExApp.app.DisplayAlerts = false;
+                    //ExBook.book.Close();
+
                     processes = Process.GetProcessesByName(procName);
-                    foreach(Process proc in processes)
+                    foreach (Process proc in processes)
                     {
-                        proc.Kill();                        
+                        proc.Kill();
                     }
                 }
-                catch(NullReferenceException e)
+                catch (NullReferenceException e)
                 {
                     GEx ex = new GEx(e.Message, e);
                     throw ex;
-                }                
+                }
             }
-        }               
+        }
     }
-
     private string GetExcelColumnName(int columnNumber)
     {
         int dividend = columnNumber;
@@ -350,12 +357,6 @@ public partial class _Default : Page
 
     protected void Button2_Click(object sender, EventArgs e)
     {
-        //Сделать удаление таблиц!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //if (ExApp.app != null)
-        //{
-        //    ExBook.book.Close(null, null, null);
-        //    ExApp.app.Quit();
-        //    ExApp.app = null;
-        //}
+        //Сделать удаление таблиц!!!
     }
 }
