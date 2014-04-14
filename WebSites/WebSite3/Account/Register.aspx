@@ -38,6 +38,22 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
+                <br />
+                <asp:TextBox ID="FamilyNameTxtBox" runat="server"></asp:TextBox>
+                <asp:Label ID="Label1" runat="server" Text="Имя и Фамилия"></asp:Label>
+                <br />
+                <asp:TextBox ID="GroupNameTxtBox" runat="server"></asp:TextBox>
+                <asp:Label ID="Label2" runat="server" Text="Номер группы полностью"></asp:Label>
+                <br />
+                <asp:TextBox ID="PhNumberTxtBox" runat="server"></asp:TextBox>
+                <asp:Label ID="Label3" runat="server" Text="Номер телефона"></asp:Label>
+                <br />
+                <asp:TextBox ID="MailTxtBox" runat="server"></asp:TextBox>
+                <asp:Label ID="Label4" runat="server" Text="E-mail"></asp:Label>
+                <br />
+                <asp:TextBox ID="SweetTxtBox" runat="server"></asp:TextBox>
+                <asp:Label ID="Label5" runat="server" Text="День Варенья"></asp:Label>
+                <br />
                 <asp:Button ID="Button1" runat="server" OnClick="CreateUser_Click" Text="Регистрация" CssClass="btn btn-default" />
             </div>
         </div>
