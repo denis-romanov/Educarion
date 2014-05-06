@@ -143,6 +143,7 @@ AppPackages/
 #sql/
 *.Cache
 ClientBin/
+App_Data/*
 [Ss]tyle[Cc]op.*
 ~$*
 *~
