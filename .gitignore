@@ -143,6 +143,7 @@ AppPackages/
 #sql/
 *.Cache
 ClientBin/
+App_Data/*
 [Ss]tyle[Cc]op.*
 ~$*
 *~
@@ -213,3 +214,6 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+WebSites/WebSite3/App_Data/aspnet-WebSite3-e60d4111-0a9a-49fe-a150-573dbfebdeb9_log.ldf
+WebSites/WebSite3/App_Data/aspnet-WebSite3-e60d4111-0a9a-49fe-a150-573dbfebdeb9_log.ldf
+WebSites/WebSite3/App_Data/aspnet-WebSite3-e60d4111-0a9a-49fe-a150-573dbfebdeb9.mdf
