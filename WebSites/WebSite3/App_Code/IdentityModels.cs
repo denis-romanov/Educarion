@@ -11,8 +11,11 @@ namespace WebSite3
     // You can add User data for the user by adding more properties to your User class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+<<<<<<< HEAD
         [Required]
         public string RealName { get; set; }
+=======
+>>>>>>> parent of f5f0002... Last try to add Profiles
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

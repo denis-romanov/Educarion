@@ -3,9 +3,6 @@ using System;
 using System.Linq;
 using System.Web.UI;
 using WebSite3;
-using System.Data;
-using System.Data.Sql;
-using System.Data.SqlClient;
 
 public partial class Account_Register : Page
 {
@@ -27,7 +24,5 @@ public partial class Account_Register : Page
         {
             ErrorMessage.Text = result.Errors.FirstOrDefault();
         }
-
-       
     }
 }
