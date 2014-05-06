@@ -15,9 +15,6 @@ namespace WebSite3
         [Required]
 =======
 >>>>>>> parent of 83255e1... Cool Commit but doesnt work
-        public string RealName { get; set; }
-=======
->>>>>>> parent of f5f0002... Last try to add Profiles
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

@@ -9,7 +9,11 @@ public partial class Account_Register : Page
     protected void CreateUser_Click(object sender, EventArgs e)
     {
         var manager = new UserManager();
-        var user = new ApplicationUser() { UserName = UserName.Text };
+        var user = new ApplicationUser() 
+        { 
+            UserName = UserName.Text, 
+            RealName = FamilyNameTxtBox.Text
+        };
         IdentityResult result = manager.Create(user, Password.Text);
         if (result.Succeeded)
         {
